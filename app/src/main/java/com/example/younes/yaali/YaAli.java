@@ -17,36 +17,55 @@ import java.io.IOException;
 public class YaAli extends BroadcastReceiver {
 
 	private Context context;
+	private boolean mode;
+	private MediaPlayer player=new MediaPlayer();
+
 
 	@SuppressLint( "WrongConstant" )
 	@Override
 	public void onReceive( Context context, Intent intent ) {
 		this.context = context;
-		boolean mode = false;
+		 mode = false;
 
-		int mode_audio = ( ( AudioManager ) context.getSystemService( "audio" ) ).getRingerMode( );
-		switch ( mode_audio ) {
+		if ( "younes".equals( intent.getStringExtra( "send_play" ) ) ) {
+			setup( );
+		}else {
+			setup( );
+		}
+
+
+	}
+
+
+	@SuppressLint( "WrongConstant" )
+	private void setup( ) {
+		switch ( ( ( AudioManager ) context.getSystemService( "audio" ) ).getRingerMode( ) ) {
 			case 0:
 				mode = true;
+			//	Intent data = new Intent( context, MyService.class );
+			//	context.startService( data );
 				break;
 			case 1:
 				mode = true;
 				break;
+			case 2:
+				if (!player.isPlaying() )
+				setupPlayer();
+				break;
 		}
+	}
 
+	private void setupPlayer( ) {
 		if ( !mode ) {
-			MediaPlayer player = new MediaPlayer( );
 			try {
 				AssetFileDescriptor fa = this.context.getAssets( ).openFd( "yaali.mp3" );
-				player.setDataSource( fa.getFileDescriptor(),fa.getStartOffset(),fa.getLength());
-				fa.close();
-				player.prepare();
-				player.start();
+					player.setDataSource( fa.getFileDescriptor(),fa.getStartOffset(),fa.getLength());
+					fa.close();
+					player.prepare();
+					player.start();
 			} catch ( IOException e ) {
 				e.printStackTrace( );
 			}
-
-
 		}
 	}
 

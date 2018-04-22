@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.younes.yaali">
 
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,12 +23,17 @@
 
         <receiver android:name=".YaAli">
             <intent-filter>
+                <action android:name="com.example.younes.yaali_Ali"/>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.HOME" />
                 <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
+
+
+        <service android:name=".MyService"/>
 
     </application>
 
